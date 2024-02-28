@@ -22,6 +22,7 @@ const Detail = () => {
     } = useSelector( (state) => /*state.moviesReducer*/ state.moviesReducerSlice);
    
 const state = useSelector( (state) => state);
+console.log(state)
 
    useEffect( () => {
       dispatch(fetchMovieRatings(movieId));
