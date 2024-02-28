@@ -7,7 +7,6 @@ import { fetchMovieDetail, fetchMovieRatings } from "../../redux/actions/movies"
 import LeftContainer from "./components/LeftContainer";
 import RightContainer from "./components/RightContainer";
 import Loading from "../Results/components/Loading";
-import Error from "../Results/components/Error";
 
 const Detail = () => {
    const { movieId } = useParams();
@@ -23,7 +22,6 @@ const Detail = () => {
     } = useSelector( (state) => /*state.moviesReducer*/ state.moviesReducerSlice);
    
 const state = useSelector( (state) => state);
-console.log(state);
 
    useEffect( () => {
       dispatch(fetchMovieRatings(movieId));
