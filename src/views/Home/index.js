@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Chairs from "../../assets/chairs.png"
+import Error from "./components/Error.js"
 
 const Home = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
+    const [error, setError] = useState('');
     
     const handleInputChange = (e) => {
         setSearch(e.target.value);
@@ -16,7 +18,14 @@ const Home = () => {
     }
     //trim elimina los espacios en blanco finales e iniciales como tambine las terminaciones de linea
     const handleSearchClick = () => {
-        navigate(`/results/${search.trim()}`)
+        if (search === "") {
+            setError("No puede realizar una busqueda vacia")
+        } else if (search.length < 3) {
+            setError("El nombre de la pelicula debe tener al menos tres caracteres")
+        }
+        else {
+            navigate(`/results/${search.trim()}`)
+        }
     }
 
     return (
@@ -31,11 +40,13 @@ const Home = () => {
                                 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded"
                     value={search}
                     onChange={handleInputChange}
+                    placeholder="Inserte una pelicula"
                 />
+                <Error errorMessage={error}/>
                 <div className="flex w-full justify-between">
                     <button className="bg-red-500 hover:bg-red-600 text-white font-lato w-full shadow-lg h-9" 
                             style={{width: "48%"}}
-                            onClick={handleSearchClick}        
+                            onClick={handleSearchClick}   
                     >
                         Buscar
                     </button>

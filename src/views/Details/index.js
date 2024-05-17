@@ -7,6 +7,7 @@ import { fetchMovieDetail, fetchMovieRatings } from "../../redux/actions/movies"
 import LeftContainer from "./components/LeftContainer";
 import RightContainer from "./components/RightContainer";
 import Loading from "../Results/components/Loading";
+import BackButton from "../../components/BackButton";
 
 const Detail = () => {
    const { movieId } = useParams();
@@ -20,9 +21,6 @@ const Detail = () => {
       ratings,
       movieDetail
     } = useSelector( (state) => /*state.moviesReducer*/ state.moviesReducerSlice);
-   
-const state = useSelector( (state) => state);
-console.log(state)
 
    useEffect( () => {
       dispatch(fetchMovieRatings(movieId));
@@ -37,11 +35,16 @@ console.log(state)
          return <Loading message="Obteniendo informacion de la pelicula..."/>
       }
       else if ( errorFetchingMovieDetail || errorFetchingMovieRatings) {
-         return <p>"Ha ocurrido un erro al obtener la informacion de la pelicula"</p>
+         return (
+            <div>
+               <p>Ha ocurrido un error al obtener la informacion de la pelicula</p>
+               <BackButton />
+            </div>
+         )
       }
 
       return (
-         <>
+         <div className="flex pt-10 justify-start items-start">
             <LeftContainer imageUrl={movieDetail?.details?.image?.url} />
             <RightContainer 
                title={movieDetail.details?.title ?? 'Sin titulo'}
@@ -51,7 +54,7 @@ console.log(state)
                genres={movieDetail.overview?.genres ?? 'No disponible'}
                cast={movieCast}
             />
-         </>
+         </div>
       )
    };
 
@@ -59,7 +62,7 @@ console.log(state)
 
    const movieCast = movieDetail?.fullCredits?.cast?.slice(0, 20) ?? [];
    return (
-      <div className="flex flex-row px-16 h-screen items-center justify-center">
+      <div className="flex flex-row px-16 items-center justify-center">
          {renderContent()}
       </div>
    );

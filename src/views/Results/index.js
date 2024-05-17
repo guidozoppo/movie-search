@@ -4,11 +4,12 @@ import { useFetchMoviesQuery } from "../../redux/api/movies";
 import Loading from "./components/Loading";
 import List from "./components/List";
 import Error from "./components/Error";
+import BackButton from "../../components/BackButton";
 
 const Results = () => {
     const { title } = useParams();
     //Se realiza llamado al endpoint con el title que esta en el params del path
-    const { data: movies, isLoading, isSuccess, isFetching, error } = useFetchMoviesQuery(title); 
+    const { data: movies, isLoading, isSuccess, isFetching, error } = useFetchMoviesQuery(title);
     const navigate = useNavigate();
 
     //El movieId viene del componente ListItem
@@ -22,7 +23,18 @@ const Results = () => {
         } else if (isLoading || isFetching) {
             return <Loading message="Buscando Peliculas..."/>
         } else if (isSuccess && movies?.results) {
-            return <List data={movies?.results} onListItemClick={handleListItemClick} />
+            return (
+                <section className="flex flex-col-reverse md:flex-row">
+                    <div className="flex flex-col w-3/5">
+                        <List data={movies?.results} onListItemClick={handleListItemClick} />
+                    </div>
+                    <div>
+                        <BackButton />
+                    </div>
+                </section>
+            )
+        } else {
+            return <Error errorMessage="No se han encontrado resultados" />
         }
     };
 
